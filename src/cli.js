@@ -7,7 +7,7 @@ const { getStagedInputFromGit } = require('./scanner');
 
 function parseArgs(argv) {
   const args = [...argv];
-  let command = 'commit';
+  let command = 'watch';
   if (args[0] && !args[0].startsWith('--')) {
     command = args.shift();
   } else if (args.includes('--help') || args.includes('-h')) {
@@ -29,9 +29,10 @@ function parseArgs(argv) {
 function printHelp() {
   console.log(`
 Usage:
-  qa-duplicate-check <command> [options]
+  qa-duplicate-check [command] [options]
 
 Commands:
+  (default)     watch
   commit        Check staged changes, then prompt/block based on commitMode
   check         Check staged changes and fail on duplicates
   watch         Watch configured folders and report duplicates on save

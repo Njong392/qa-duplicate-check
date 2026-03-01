@@ -7,6 +7,14 @@ const DEFAULTS = {
   rules: [],
 };
 
+function normalizeInclude(include) {
+  const values = Array.isArray(include) && include.length ? include : ['.js', '.jsx', '.ts', '.tsx'];
+  return values.map((value) => {
+    if (typeof value !== 'string') return String(value || '');
+    return value.startsWith('.') ? value : `.${value}`;
+  });
+}
+
 function resolveConfigPath(configArg) {
   if (configArg) return path.resolve(process.cwd(), configArg);
 
@@ -24,12 +32,12 @@ function resolveConfigPath(configArg) {
   return null;
 }
 
-function normalizeRule(rule) {
+function normalizeRule(rule, configDir) {
   return {
     name: rule.name || `${rule.kind}:${rule.path}`,
-    path: rule.path,
+    path: path.resolve(configDir, rule.path),
     kind: rule.kind,
-    include: rule.include || ['.js', '.jsx', '.ts', '.tsx'],
+    include: normalizeInclude(rule.include),
     crossFile: rule.crossFile !== false,
   };
 }
@@ -65,7 +73,7 @@ function loadConfig(configArg) {
   const merged = {
     ...DEFAULTS,
     ...userConfig,
-    rules: (userConfig.rules || []).map(normalizeRule),
+    rules: (userConfig.rules || []).map((rule) => normalizeRule(rule, path.dirname(configPath))),
   };
 
   // Backward compatibility for older boolean config.
