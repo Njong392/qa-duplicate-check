@@ -1,0 +1,45 @@
+{
+  "name": "@njong392/qa-duplicate-check",
+  "version": "1.0.0",
+  "description": "Configurable duplicate detector for function and variable patterns in JS/TS projects",
+  "main": "src/index.js",
+  "bin": {
+    "qa-duplicate-check": "src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "qa",
+    "husky",
+    "pre-commit",
+    "duplicate-detection",
+    "cypress"
+  ],
+  "author": "Njong392",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Njong392/qa-duplicate-check.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Njong392/qa-duplicate-check/issues"
+  },
+  "homepage": "https://github.com/Njong392/qa-duplicate-check#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "npm pack --dry-run"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.28.5",
+    "@babel/traverse": "^7.28.5",
+    "readline-sync": "^1.4.10"
+  }
+}
