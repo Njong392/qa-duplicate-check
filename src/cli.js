@@ -2,12 +2,12 @@
 
 const fs = require('fs');
 const { loadConfig } = require('./config');
-const { runCommitCheck, runStagedCheck, runWatch } = require('./index');
+const { runCommitCheck, runStagedCheck } = require('./index');
 const { getStagedInputFromGit } = require('./scanner');
 
 function parseArgs(argv) {
   const args = [...argv];
-  let command = 'watch';
+  let command = 'commit';
   if (args[0] && !args[0].startsWith('--')) {
     command = args.shift();
   } else if (args.includes('--help') || args.includes('-h')) {
@@ -26,16 +26,18 @@ function parseArgs(argv) {
   return { command, configPath, stagedFilesFile, stagedDiffFile };
 }
 
+function isValidCommand(command) {
+  return ['commit', 'check', 'help'].includes(command);
+}
+
 function printHelp() {
   console.log(`
 Usage:
-  qa-duplicate-check [command] [options]
+  qa-duplicate-check <command> [options]
 
 Commands:
-  (default)     watch
   commit        Check staged changes, then prompt/block based on commitMode
   check         Check staged changes and fail on duplicates
-  watch         Watch configured folders and report duplicates on save
 
 Options:
   --config <path>             Path to config file
@@ -65,11 +67,17 @@ function loadStagedInput(stagedFilesFile, stagedDiffFile) {
   return { stagedFiles, stagedDiffText };
 }
 
-async function main() {
+function main() {
   const { command, configPath, stagedFilesFile, stagedDiffFile } = parseArgs(process.argv.slice(2));
   if (command === 'help') {
     printHelp();
     process.exit(0);
+  }
+
+  if (!isValidCommand(command)) {
+    console.error(`[qa-duplicate-check] Unknown command "${command}".`);
+    printHelp();
+    process.exit(1);
   }
 
   let loaded;
@@ -82,11 +90,6 @@ async function main() {
 
   const { configPath: resolvedConfigPath, config } = loaded;
   console.log(`[qa-duplicate-check] Using config: ${resolvedConfigPath}`);
-
-  if (command === 'watch') {
-    await runWatch(config);
-    return;
-  }
 
   let stagedInput;
   try {

@@ -6,7 +6,6 @@ It supports:
 - Function duplicate detection (similarity-based)
 - Variable duplicate detection (exact string-content match)
 - Commit-time enforcement (`strict` block or `prompt` override)
-- Save-time duplicate feedback (`watch`)
 
 ## Install
 
@@ -44,16 +43,12 @@ module.exports = {
 ## Commands
 
 ```sh
-qa-duplicate-check
 qa-duplicate-check commit
 qa-duplicate-check check
-qa-duplicate-check watch
 ```
 
-- `qa-duplicate-check` (default): starts watch mode
 - `commit`: checks staged changes and enforces based on `commitMode`
 - `check`: checks staged changes and exits non-zero on duplicates
-- `watch`: monitors configured folders and reports duplicates on file save
 
 
 ## Husky integration
@@ -64,8 +59,7 @@ qa-duplicate-check watch
 {
   "scripts": {
     "dupcheck:commit": "qa-duplicate-check commit",
-    "dupcheck:check": "qa-duplicate-check check",
-    "dupcheck:watch": "qa-duplicate-check watch"
+    "dupcheck:check": "qa-duplicate-check check"
   }
 }
 ```
