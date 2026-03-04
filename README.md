@@ -20,7 +20,7 @@ Create `qa-duplicate-check.config.js` in your project root:
 ```js
 module.exports = {
     functionSimilarityThreshold: 0.92,
-    // UI Git clients are usually non-interactive; avoid hanging on prompts there.
+    // UI Git clients are usually non-interactive
     commitMode: process.stdin.isTTY ? 'prompt' : 'strict', // 'strict' | 'prompt'
     rules: [
         {
