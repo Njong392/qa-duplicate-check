@@ -68,18 +68,21 @@ function loadStagedInput(stagedFilesFile, stagedDiffFile) {
 }
 
 function main() {
+  // parse entered command
   const { command, configPath, stagedFilesFile, stagedDiffFile } = parseArgs(process.argv.slice(2));
   if (command === 'help') {
     printHelp();
     process.exit(0);
   }
 
+  // validate the command
   if (!isValidCommand(command)) {
     console.error(`[qa-duplicate-check] Unknown command "${command}".`);
     printHelp();
     process.exit(1);
   }
 
+  // load config file
   let loaded;
   try {
     loaded = loadConfig(configPath);
@@ -99,6 +102,7 @@ function main() {
     process.exit(1);
   }
 
+  // run based on the mode set (check or commit)
   const exitCode =
     command === 'check' ? runStagedCheck(config, stagedInput) : runCommitCheck(config, stagedInput);
   process.exit(exitCode);

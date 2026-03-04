@@ -19,24 +19,26 @@ Create `qa-duplicate-check.config.js` in your project root:
 
 ```js
 module.exports = {
-  functionSimilarityThreshold: 0.92,
-  commitMode: 'strict', // 'strict' | 'prompt'
-  rules: [
-    {
-      name: 'QA Actions',
-      path: 'cypress/e2e/actions',
-      kind: 'functions', // 'functions' | 'variables'
-      include: ['.js'],
-      crossFile: true,
-    },
-    {
-      name: 'QA Pages',
-      path: 'cypress/e2e/pages',
-      kind: 'variables',
-      include: ['.js'],
-      crossFile: true,
-    },
-  ],
+    functionSimilarityThreshold: 0.92,
+    // UI Git clients are usually non-interactive; avoid hanging on prompts there.
+    commitMode: process.stdin.isTTY ? 'prompt' : 'strict', // 'strict' | 'prompt'
+    rules: [
+        {
+            name: 'QA Actions',
+            path: 'cypress/e2e/actions',
+            kind: 'functions', // 'functions' | 'variables'
+            include: ['.js'],
+            crossFile: true,
+        },
+        {
+
+            name: 'QA Pages',
+            path: 'cypress/e2e/pages',
+            kind: 'variables',
+            include: ['.js'],
+            crossFile: true,
+        },
+    ],
 };
 ```
 

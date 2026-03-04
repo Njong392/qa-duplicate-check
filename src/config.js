@@ -76,11 +76,6 @@ function loadConfig(configArg) {
     rules: (userConfig.rules || []).map((rule) => normalizeRule(rule, path.dirname(configPath))),
   };
 
-  // Backward compatibility for older boolean config.
-  if (typeof userConfig.promptOnCommit === 'boolean' && !userConfig.commitMode) {
-    merged.commitMode = userConfig.promptOnCommit ? 'prompt' : 'strict';
-  }
-
   assertValid(merged);
 
   return {

@@ -185,8 +185,5 @@ function getStagedInputFromGit() {
   };
 }
 
-function scanFiles(config, files) {
-  return scanTargets({ config, targets: files, mode: 'file' });
-}
 
 module.exports = { scanStaged, scanFiles, isInRule, getStagedInputFromGit };
